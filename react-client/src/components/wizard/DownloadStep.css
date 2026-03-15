@@ -1,0 +1,597 @@
+/* ── Geist Sans font ───────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Root background — dark glass canvas ──────────────────────────────── */
+.dl-bg {
+    background-color: #07080f;
+    font-family: 'Inter', 'Geist Sans', system-ui, -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gradient mesh blobs */
+.dl-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(90px);
+    z-index: 0;
+}
+.dl-blob-1 {
+    top: -20%;
+    left: -15%;
+    width: 65%;
+    height: 65%;
+    background: radial-gradient(ellipse, rgba(67, 24, 255, 0.13) 0%, transparent 70%);
+}
+.dl-blob-2 {
+    bottom: -20%;
+    right: -15%;
+    width: 55%;
+    height: 55%;
+    background: radial-gradient(ellipse, rgba(99, 47, 200, 0.11) 0%, transparent 70%);
+}
+.dl-blob-3 {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(ellipse, rgba(120, 60, 255, 0.05) 0%, transparent 70%);
+}
+
+/* Subtle grain overlay */
+.dl-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.022;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+}
+
+/* Micro line pattern (only visible up close) */
+.dl-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(120, 80, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 80, 255, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+/* ── Ghost document stack (behind the glass card) ─────────────────────── */
+.dl-stack-layer {
+    position: absolute;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.012);
+    border: 1px solid rgba(130, 80, 255, 0.07);
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 8px 32px rgba(60, 20, 120, 0.12);
+}
+
+/* ── Breadcrumbs ──────────────────────────────────────────────────────── */
+.dl-crumb {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(155, 125, 220, 0.5);
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    transition: color 0.15s;
+    white-space: nowrap;
+}
+.dl-crumb:hover { color: rgba(190, 160, 255, 0.85); }
+.dl-crumb-active { color: rgba(175, 145, 255, 0.72); cursor: default; }
+.dl-crumb-sep {
+    font-size: 10px;
+    color: rgba(100, 75, 160, 0.35);
+    user-select: none;
+    margin: 0 2px;
+}
+
+/* ── Glass card ───────────────────────────────────────────────────────── */
+.dl-glass-card {
+    background: rgba(10, 7, 26, 0.80);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border-radius: 16px;
+    box-shadow:
+        0 48px 120px rgba(20, 6, 50, 0.70),
+        0 12px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    position: relative;
+    z-index: 2;
+}
+/* Gradient border via pseudo-element mask trick */
+.dl-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(
+        138deg,
+        rgba(150, 100, 255, 0.50) 0%,
+        rgba(110, 65, 210, 0.20) 35%,
+        transparent 55%,
+        rgba(55, 25, 110, 0.28) 100%
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* ── Animated success ring ────────────────────────────────────────────── */
+@keyframes dl-ring-pulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.55));
+        opacity: 1;
+    }
+    50% {
+        filter: drop-shadow(0 0 14px rgba(34, 197, 94, 0.90));
+        opacity: 0.80;
+    }
+}
+.dl-ring { animation: dl-ring-pulse 2.6s ease-in-out infinite; }
+
+/* ── Template badge pill ─────────────────────────────────────────────── */
+.dl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px 2px 7px;
+    border-radius: 999px;
+    background: rgba(105, 60, 210, 0.18);
+    border: 1px solid rgba(145, 95, 255, 0.28);
+    color: rgba(185, 148, 255, 0.92);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* ── Info table ───────────────────────────────────────────────────────── */
+.dl-info-table {
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.018);
+}
+.dl-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.038);
+}
+.dl-info-row:last-child { border-bottom: none; }
+.dl-info-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.32);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+}
+.dl-info-value {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 500;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Primary pill button ─────────────────────────────────────────────── */
+.dl-pill-btn {
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(140deg, #6b3aff 0%, #4318FF 55%, #3210d4 100%);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border: none;
+    cursor: pointer;
+    box-shadow:
+        0 0 22px rgba(99, 48, 255, 0.40),
+        0 4px 14px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transition: box-shadow 0.2s ease, transform 0.15s ease, opacity 0.15s;
+    white-space: nowrap;
+    line-height: 1;
+}
+.dl-pill-btn:hover:not(:disabled) {
+    box-shadow:
+        0 0 36px rgba(99, 48, 255, 0.60),
+        0 6px 22px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+}
+.dl-pill-btn:active:not(:disabled) { transform: translateY(0); }
+.dl-pill-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Ghost / outline button ─────────────────────────────────────────── */
+.dl-ghost-btn {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+    line-height: 1;
+}
+.dl-ghost-btn:hover {
+    border-color: rgba(145, 90, 255, 0.45);
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(145, 90, 255, 0.07);
+}
+
+/* ── Options dropdown ────────────────────────────────────────────────── */
+.dl-dropdown {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    min-width: 185px;
+    background: rgba(11, 7, 28, 0.97);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(145, 95, 255, 0.20);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    z-index: 50;
+}
+.dl-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 9px 14px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.1s, color 0.1s;
+    font-family: inherit;
+}
+.dl-dropdown-item:hover {
+    background: rgba(145, 95, 255, 0.10);
+    color: rgba(255, 255, 255, 0.92);
+}
+.dl-dropdown-sep {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 2px 0;
+}
+
+/* ── SharePoint / open link ──────────────────────────────────────────── */
+.dl-sp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(145, 95, 255, 0.30);
+    color: rgba(185, 150, 255, 0.85);
+    font-size: 12px;
+    font-weight: 500;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    text-decoration: none;
+}
+.dl-sp-link:hover {
+    border-color: rgba(145, 95, 255, 0.60);
+    color: rgba(205, 175, 255, 1);
+    background: rgba(145, 95, 255, 0.08);
+}
+
+/* ── Review panel ────────────────────────────────────────────────────── */
+.dl-review-panel {
+    background: rgba(255, 255, 255, 0.022);
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+/* ── Textarea ────────────────────────────────────────────────────────── */
+.dl-textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    font-family: inherit;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+.dl-textarea:focus {
+    border-color: rgba(145, 95, 255, 0.50);
+    background: rgba(255, 255, 255, 0.06);
+}
+.dl-textarea::placeholder { color: rgba(255, 255, 255, 0.20); }
+
+/* ── Done state success glow ring ────────────────────────────────────── */
+@keyframes dl-success-pop {
+    0% { transform: scale(0.7); opacity: 0; }
+    70% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.dl-success-enter { animation: dl-success-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ── Spinner ─────────────────────────────────────────────────────────── */
+@keyframes dl-spin {
+    to { transform: rotate(360deg); }
+}
+.dl-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.30);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: dl-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+.dl-spinner-sm {
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(255, 255, 255, 0.30);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: dl-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+/* ── Layout helpers ──────────────────────────────────────────────────── */
+.dl-breadcrumbs {
+    position: relative;
+    z-index: 3;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 20px 4px;
+}
+.dl-crumb-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: rgba(130, 100, 210, 0.45);
+}
+.dl-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 3;
+}
+.dl-stack-1 {
+    width: 460px;
+    height: 310px;
+    transform: rotate(-4deg) translate(-28px, 22px);
+}
+.dl-stack-2 {
+    width: 460px;
+    height: 310px;
+    transform: rotate(-2deg) translate(-14px, 11px);
+}
+
+/* max-width on the card itself */
+.dl-glass-card {
+    max-width: 500px;
+    width: 100%;
+    padding: 28px;
+}
+
+/* ── Ring wrappers ───────────────────────────────────────────────────── */
+.dl-ring-wrap {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+}
+.dl-ring-wrap-sm {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+}
+.dl-ring-checkmark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dl-ring-svg {
+    display: block;
+    transform: rotate(-90deg);
+}
+
+/* ── Pre-download text ───────────────────────────────────────────────── */
+.dl-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+}
+.dl-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.dl-timestamp {
+    font-size: 11px;
+    color: rgba(160, 130, 220, 0.45);
+    font-style: italic;
+}
+.dl-doc-name {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0 0 18px;
+}
+.dl-info-table { margin-bottom: 20px; }
+.dl-version {
+    color: rgba(145, 100, 255, 0.55);
+    font-size: 11px;
+    margin-left: 4px;
+}
+.dl-count {
+    color: rgba(145, 100, 255, 0.55);
+    font-size: 11px;
+    margin-left: 4px;
+}
+.dl-info-value-mono {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 500;
+    text-align: right;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dl-error-box {
+    margin-bottom: 16px;
+    background: rgba(127, 29, 29, 0.35);
+    border: 1px solid rgba(239, 68, 68, 0.30);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: rgba(252, 165, 165, 0.90);
+    font-size: 12px;
+}
+
+/* ── CTA row ─────────────────────────────────────────────────────────── */
+.dl-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.dl-cta-row .dl-pill-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+.dl-shortcut {
+    font-size: 11px;
+    color: rgba(145, 100, 255, 0.38);
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.dl-options-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+.dl-options-btn {
+    padding: 9px 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ── Done state text ─────────────────────────────────────────────────── */
+.dl-title-done {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    margin: 0 0 4px;
+    letter-spacing: -0.02em;
+}
+.dl-subtitle-done {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    margin: 0 0 16px;
+}
+.dl-filename { color: rgba(255, 255, 255, 0.68); }
+
+/* ── Review panel internals ──────────────────────────────────────────── */
+.dl-review-panel { margin-bottom: 16px; }
+.dl-review-heading {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.dl-review-icon { color: rgba(170, 120, 255, 0.80); }
+.dl-review-label {
+    display: block;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.28);
+    margin-bottom: 6px;
+}
+.dl-review-label-mt {
+    display: block;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.28);
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+.dl-send-success {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(134, 239, 172, 0.90);
+    background: rgba(20, 83, 45, 0.35);
+    border: 1px solid rgba(34, 197, 94, 0.20);
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+.dl-send-error {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(252, 165, 165, 0.90);
+    background: rgba(127, 29, 29, 0.35);
+    border: 1px solid rgba(239, 68, 68, 0.20);
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+.dl-send-btn {
+    margin-top: 12px;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 12px;
+    padding: 9px 16px;
+}
+.dl-back-btn {
+    width: 100%;
+    padding: 9px 16px;
+    font-size: 12px;
+}

@@ -1,0 +1,45 @@
+.opportunities-container {
+    padding: 24px 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.opportunities-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.opportunities-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.opportunities-count {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.opp-name-link {
+    color: #0078d4;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.opp-name-link:hover {
+    text-decoration: underline;
+}
+
+/* Zebra striping */
+.fui-DataGridRow:nth-child(even) {
+    background-color: #f7f9fc;
+}
+
+.fui-DataGridRow:hover {
+    background-color: #eaf2ff;
+    cursor: pointer;
+}

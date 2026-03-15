@@ -1,0 +1,113 @@
+/* ── Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --charcoal: #2D2D2D;
+  --sand:     #E6D3A3;
+  --cream:    #F7F5F2;
+  --taupe:    #8A817C;
+  --white:    #FFFFFF;
+}
+
+/* ── Top nav bar ─────────────────────────────────────────────────────── */
+.top-nav {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 24px;
+  background-color: var(--charcoal);
+  box-shadow: 0 1px 0 rgba(230, 211, 163, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+/* ── Hamburger ───────────────────────────────────────────────────────── */
+.top-nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 8px 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.top-nav-hamburger:hover {
+  background: rgba(230, 211, 163, 0.10);
+  border-color: rgba(230, 211, 163, 0.20);
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--sand);
+  border-radius: 2px;
+}
+
+/* ── Brand ───────────────────────────────────────────────────────────── */
+.top-nav-brand {
+  flex: 0 0 auto;
+}
+
+.top-nav-logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+.top-nav-logo:hover { color: var(--sand); }
+
+/* ── Nav links ───────────────────────────────────────────────────────── */
+.top-nav-links {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.top-nav-link {
+  color: rgba(255, 255, 255, 0.70);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.top-nav-link:hover {
+  background: rgba(230, 211, 163, 0.10);
+  color: var(--white);
+}
+
+/* ── Actions (login) ─────────────────────────────────────────────────── */
+.top-nav-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.top-nav-actions mgt-login {
+  --login-signed-in-background: transparent;
+  --login-signed-in-color: var(--white);
+  --login-signed-out-button-background: rgba(230, 211, 163, 0.15);
+  --login-signed-out-button-background--hover: rgba(230, 211, 163, 0.28);
+  --login-signed-out-button-color: var(--white);
+  color: var(--white);
+}
+
+.top-nav-actions mgt-login::part(signed-in-button) {
+  color: var(--white);
+}
+
+.top-nav-actions .mgt-login .signed-in-btn,
+.top-nav-actions [class*="login"] [class*="user-name"],
+.top-nav-actions [class*="login"] [class*="displayName"] {
+  color: var(--white) !important;
+}

@@ -1,0 +1,100 @@
+.opp-detail {
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.opp-detail-back {
+    align-self: flex-start;
+}
+
+.opp-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.opp-detail-name {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* ── Field cards ── */
+.opp-detail-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.opp-detail-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 20px;
+    background: #f4f7fb;
+    border: 1px solid #dde3ed;
+    border-radius: 8px;
+    min-width: 160px;
+}
+
+.opp-detail-card--wide {
+    flex: 1 1 100%;
+}
+
+.opp-field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.opp-field-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.opp-field-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0078d4;
+}
+
+/* ── Contacts section ── */
+.opp-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.opp-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+}
+
+.opp-section-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.opp-no-contacts {
+    color: #7f8c8d;
+    font-style: italic;
+    margin: 0;
+}
+
+.fui-DataGridRow:nth-child(even) {
+    background-color: #f7f9fc;
+}
+
+.fui-DataGridRow:hover {
+    background-color: #eaf2ff;
+}
