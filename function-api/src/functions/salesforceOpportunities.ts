@@ -26,10 +26,10 @@ interface SalesforceQueryResponse {
 async function getSalesforceToken(): Promise<SalesforceTokenResponse> {
     const clientId = process.env.SF_CLIENT_ID;
     const clientSecret = process.env.SF_CLIENT_SECRET;
-    const loginUrl = process.env.SF_LOGIN_URL ?? "https://orgfarm-277029e6b1-dev-ed.develop.my.salesforce.com";
+    const loginUrl = process.env.SF_LOGIN_URL;
 
-    if (!clientId || !clientSecret) {
-        throw new Error("Missing Salesforce credentials: SF_CLIENT_ID and SF_CLIENT_SECRET must be set.");
+    if (!clientId || !clientSecret || !loginUrl) {
+        throw new Error("Missing Salesforce credentials: SF_CLIENT_ID, SF_CLIENT_SECRET, and SF_LOGIN_URL must be set.");
     }
 
     const tokenResponse = await axios.post<SalesforceTokenResponse>(
