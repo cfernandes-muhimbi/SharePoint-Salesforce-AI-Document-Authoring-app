@@ -23,26 +23,26 @@ collaboration.
 
 Organizations frequently generate documents such as:
 
--   Sales proposals\
--   Contracts\
--   Master Service Agreements\
--   Invoices\
+-   Sales proposals
+-   Contracts
+-   Master Service Agreements
+-   Invoices
 -   Statements of Work
 
 In many companies this process is still **manual and inefficient**.
 
 Sales teams often:
 
--   Copy data from CRM systems into document templates\
--   Create multiple document versions manually\
--   Send documents via email for review\
+-   Copy data from CRM systems into document templates
+-   Create multiple document versions manually
+-   Send documents via email for review
 -   Store files across multiple disconnected systems
 
 This results in:
 
--   Human errors in documents\
--   Lost productivity\
--   Expensive CRM storage costs\
+-   Human errors in documents
+-   Lost productivity
+-   Expensive CRM storage costs
 -   Poor collaboration and version control
 
 This application simplifies that workflow by **automating document
@@ -58,11 +58,11 @@ automate document generation.
 
 Users can:
 
-1.  Browse Salesforce opportunities\
-2.  Select a document template\
-3.  Automatically populate templates with CRM data\
-4.  Preview and edit the document\
-5.  Store documents securely in SharePoint Embedded\
+1.  Browse Salesforce opportunities
+2.  Select a document template
+3.  Automatically populate templates with CRM data
+4.  Preview and edit the document
+5.  Store documents securely in SharePoint Embedded
 6.  Send document review requests via Microsoft Teams
 
 This transforms a traditionally manual workflow into a **fully automated
@@ -130,9 +130,9 @@ This solution introduces a modern architecture:
 
 Benefits include:
 
--   Reduced CRM storage costs\
--   Enterprise-grade document security\
--   Seamless collaboration using Microsoft services\
+-   Reduced CRM storage costs
+-   Enterprise-grade document security
+-   Seamless collaboration using Microsoft services
 -   Scalable document management architecture
 
 SharePoint Embedded enables developers to build **cross-platform
