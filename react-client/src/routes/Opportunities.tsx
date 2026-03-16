@@ -1,17 +1,5 @@
 import React from 'react';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
-import {
-    DataGrid,
-    DataGridHeader,
-    DataGridHeaderCell,
-    DataGridBody,
-    DataGridRow,
-    DataGridCell,
-    TableColumnDefinition,
-    TableCellLayout,
-    createTableColumn,
-    Badge,
-} from '@fluentui/react-components';
 import { ILoaderParams } from '../common/ILoaderParams';
 import { ISalesforceOpportunity, SalesforceApiProvider } from '../providers/SalesforceApiProvider';
 import './Opportunities.css';
@@ -20,29 +8,21 @@ export async function loader({ params }: ILoaderParams): Promise<ISalesforceOppo
     return SalesforceApiProvider.instance.listOpportunities();
 }
 
-const stageColor = (stage: string): 'success' | 'warning' | 'danger' | 'informative' => {
-    if (stage === 'Closed Won') return 'success';
-    if (stage === 'Closed Lost') return 'danger';
-    if (stage.includes('Negotiation') || stage.includes('Proposal')) return 'warning';
-    return 'informative';
+const stageColors: Record<string, string> = {
+    'Closed Won':   'stage-won',
+    'Closed Lost':  'stage-lost',
+};
+const getStageClass = (stage: string): string => {
+    if (stageColors[stage]) return stageColors[stage];
+    if (stage.includes('Negotiation') || stage.includes('Proposal')) return 'stage-warning';
+    return 'stage-info';
 };
 
 const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
 
 const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-GB', {
-        day: '2-digit', month: '2-digit', year: 'numeric'
-    });
-
-const columnSizingOptions = {
-    name:      { minWidth: 220, defaultWidth: 260 },
-    account:   { minWidth: 180, defaultWidth: 220 },
-    amount:    { minWidth: 110, defaultWidth: 130 },
-    closeDate: { minWidth: 110, defaultWidth: 130 },
-    stage:     { minWidth: 160, defaultWidth: 190 },
-    owner:     { minWidth: 140, defaultWidth: 160 },
-};
+    new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
 export const Opportunities: React.FC = () => {
     const opportunities = useLoaderData() as ISalesforceOpportunity[];
@@ -50,86 +30,75 @@ export const Opportunities: React.FC = () => {
     const location = useLocation();
     const quickMode = (location.state as any)?.quickMode ?? false;
 
-    const columns: TableColumnDefinition<ISalesforceOpportunity>[] = [
-        createTableColumn({
-            columnId: 'name',
-            renderHeaderCell: () => 'Opportunity Name',
-            renderCell: (item) => (
-                <TableCellLayout>
-                    <span className="opp-name-link" onClick={() => navigate(`/opportunities/${item.Id}`, { state: { quickMode } })}>
-                        {item.Name}
-                    </span>
-                </TableCellLayout>
-            ),
-        }),
-        createTableColumn({
-            columnId: 'account',
-            renderHeaderCell: () => 'Account Name',
-            renderCell: (item) => <TableCellLayout>{item.Account?.Name ?? '—'}</TableCellLayout>,
-        }),
-        createTableColumn({
-            columnId: 'amount',
-            renderHeaderCell: () => 'Amount',
-            renderCell: (item) => (
-                <TableCellLayout>{item.Amount != null ? formatCurrency(item.Amount) : '—'}</TableCellLayout>
-            ),
-        }),
-        createTableColumn({
-            columnId: 'closeDate',
-            renderHeaderCell: () => 'Close Date',
-            renderCell: (item) => <TableCellLayout>{formatDate(item.CloseDate)}</TableCellLayout>,
-        }),
-        createTableColumn({
-            columnId: 'stage',
-            renderHeaderCell: () => 'Stage',
-            renderCell: (item) => (
-                <TableCellLayout>
-                    <Badge appearance="filled" color={stageColor(item.StageName)}>
-                        {item.StageName}
-                    </Badge>
-                </TableCellLayout>
-            ),
-        }),
-        createTableColumn({
-            columnId: 'owner',
-            renderHeaderCell: () => 'Opportunity Owner',
-            renderCell: (item) => <TableCellLayout>{item.Owner?.Name ?? '—'}</TableCellLayout>,
-        }),
-    ];
-
     return (
-        <div className="opportunities-container">
-            <div className="opportunities-header">
-                <h2 className="opportunities-title">Opportunities</h2>
-                <span className="opportunities-count">{opportunities.length} records</span>
+        <div className="opp-page">
+
+            {/* ── Page header banner ── */}
+            <div className="opp-banner">
+                <div className="opp-banner-inner">
+                    <h1 className="opp-banner-title">Quick AI Templates</h1>
+                    <p className="opp-banner-sub">Select a template and generate your document instantly</p>
+                </div>
+                <button type="button" className="opp-back-btn" onClick={() => navigate(-1)}>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                </button>
             </div>
-            <DataGrid
-                items={opportunities}
-                columns={columns}
-                getRowId={(item) => item.Id}
-                resizableColumns
-                sortable
-                columnSizingOptions={columnSizingOptions}
-            >
-                <DataGridHeader>
-                    <DataGridRow>
-                        {({ renderHeaderCell }) => (
-                            <DataGridHeaderCell>
-                                <b>{renderHeaderCell()}</b>
-                            </DataGridHeaderCell>
-                        )}
-                    </DataGridRow>
-                </DataGridHeader>
-                <DataGridBody<ISalesforceOpportunity>>
-                    {({ item, rowId }) => (
-                        <DataGridRow<ISalesforceOpportunity> key={rowId}>
-                            {({ renderCell }) => (
-                                <DataGridCell>{renderCell(item)}</DataGridCell>
-                            )}
-                        </DataGridRow>
-                    )}
-                </DataGridBody>
-            </DataGrid>
+
+            {/* ── Main content ── */}
+            <div className="opp-body">
+                <div className="opp-card">
+
+                    {/* Table header row */}
+                    <div className="opp-table-toolbar">
+                        <h2 className="opp-table-title">Opportunities</h2>
+                        <span className="opp-table-count">{opportunities.length} records</span>
+                    </div>
+
+                    {/* Table */}
+                    <div className="opp-table-wrap">
+                        <table className="opp-table">
+                            <thead>
+                                <tr>
+                                    <th>Opportunity Name</th>
+                                    <th>Account Name</th>
+                                    <th>Amount</th>
+                                    <th>Close Date</th>
+                                    <th>Stage</th>
+                                    <th>Owner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {opportunities.map((item) => (
+                                    <tr
+                                        key={item.Id}
+                                        className="opp-row"
+                                        onClick={() => navigate(`/opportunities/${item.Id}`, { state: { quickMode } })}
+                                    >
+                                        <td>
+                                            <span className="opp-name-link">{item.Name}</span>
+                                        </td>
+                                        <td>{item.Account?.Name ?? '—'}</td>
+                                        <td className="opp-amount">
+                                            {item.Amount != null ? formatCurrency(item.Amount) : '—'}
+                                        </td>
+                                        <td>{formatDate(item.CloseDate)}</td>
+                                        <td>
+                                            <span className={`opp-stage ${getStageClass(item.StageName)}`}>
+                                                {item.StageName}
+                                            </span>
+                                        </td>
+                                        <td>{item.Owner?.Name ?? '—'}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 };

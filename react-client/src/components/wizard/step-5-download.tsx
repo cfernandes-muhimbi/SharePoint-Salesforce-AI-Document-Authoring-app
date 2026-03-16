@@ -12,6 +12,7 @@ const SAVE_CONTAINER_ID = 'b!0H8UuMhhCE21scpbsG1DtJAuao1T-ftJu8nAgaJOh8Faa-T6Ou3
 export default function DownloadStep({ onClose }: DownloadStepProps) {
     const { state } = useWizard();
 
+    const [savedItem, setSavedItem] = useState<{ driveId: string; itemId: string } | null>(null);
     const [status, setStatus]   = useState<'idle' | 'exporting' | 'uploading' | 'done' | 'error'>('idle');
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [savedUrl, setSavedUrl] = useState<string | null>(null);
@@ -65,6 +66,8 @@ export default function DownloadStep({ onClose }: DownloadStepProps) {
             });
             const item = await GraphProvider.instance.uploadFile(SAVE_CONTAINER_ID, file, 'root');
             setSavedUrl(item.webUrl ?? null);
+            const driveId = item.parentReference?.driveId ?? SAVE_CONTAINER_ID;
+            setSavedItem({ driveId, itemId: item.id! });
             setStatus('done');
         } catch (err: any) {
             setErrorMsg(`Downloaded locally, but failed to save to container: ${err?.message ?? err}`);
@@ -88,6 +91,10 @@ export default function DownloadStep({ onClose }: DownloadStepProps) {
             const id = person.id ?? person.userId;
             if (!id) { errors.push(`Could not resolve ID for ${person.displayName}`); continue; }
             try {
+                // Grant edit access first, then notify via Teams
+                if (savedItem) {
+                    await GraphProvider.instance.grantEditPermission(savedItem.driveId, savedItem.itemId, id);
+                }
                 await GraphProvider.instance.sendReviewCard(id, docTitle, savedUrl, senderName, reviewMessage || undefined);
             } catch (err: any) {
                 errors.push(`${person.displayName}: ${err?.message ?? err}`);

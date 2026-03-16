@@ -183,34 +183,47 @@ function QuickPipeline({ onClose }: { onClose: () => void }) {
 
     if (phase === 'select') {
         return (
-            <div className="flex flex-col items-center justify-center h-full gap-6 p-8 text-center">
-                <h2 className="text-2xl font-bold text-gray-900">Choose a Template</h2>
-                <p className="text-gray-500 text-sm">Select the document type to generate automatically.</p>
-                <div className="flex gap-6 mt-2">
+            <div className="qdg-select">
+                <div className="qdg-select-header">
+                    <h2 className="qdg-select-title">Choose a Template</h2>
+                    <p className="qdg-select-sub">Select the document type to generate automatically.</p>
+                </div>
+
+                <div className="qdg-template-grid">
+                    {/* Invoice */}
                     <button
                         type="button"
+                        className="qdg-template-card"
                         onClick={() => { setSelectedTemplate('invoice'); setPhase('running'); }}
-                        className="flex flex-col items-center gap-3 w-44 p-6 bg-white border-2 border-gray-200 hover:border-indigo-500 hover:shadow-md rounded-2xl transition-all group"
                     >
-                        <span className="text-5xl">🧾</span>
-                        <span className="font-semibold text-gray-800 group-hover:text-indigo-700">Invoice</span>
-                        <span className="text-xs text-gray-400">invoice_template_with_terms.docx</span>
+                        <div className="qdg-template-icon qdg-template-icon--invoice">
+                            <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                                    d="M9 12h6m-6 4h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                            </svg>
+                        </div>
+                        <span className="qdg-template-name">Invoice</span>
+                        <span className="qdg-template-file">invoice_template_with_terms.docx</span>
                     </button>
+
+                    {/* MSA */}
                     <button
                         type="button"
+                        className="qdg-template-card"
                         onClick={() => { setSelectedTemplate('msa'); setPhase('running'); }}
-                        className="flex flex-col items-center gap-3 w-44 p-6 bg-white border-2 border-gray-200 hover:border-indigo-500 hover:shadow-md rounded-2xl transition-all group"
                     >
-                        <span className="text-5xl">📋</span>
-                        <span className="font-semibold text-gray-800 group-hover:text-indigo-700">MSA</span>
-                        <span className="text-xs text-gray-400">msa_template.docx</span>
+                        <div className="qdg-template-icon qdg-template-icon--msa">
+                            <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <span className="qdg-template-name">MSA</span>
+                        <span className="qdg-template-file">msa_template.docx</span>
                     </button>
                 </div>
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="mt-4 text-sm text-gray-400 hover:text-gray-600 underline"
-                >
+
+                <button type="button" className="qdg-cancel-btn" onClick={onClose}>
                     Cancel
                 </button>
             </div>
@@ -219,27 +232,26 @@ function QuickPipeline({ onClose }: { onClose: () => void }) {
 
     if (phase === 'running') {
         return (
-            <div className="flex flex-col items-center justify-center h-full gap-6 p-8">
-                <div className="w-14 h-14 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
-                <div className="text-center">
-                    <p className="text-gray-700 font-medium">{statusText}</p>
-                    <p className="text-gray-400 text-sm mt-1">Please wait while we prepare your document…</p>
-                </div>
+            <div className="qdg-running">
+                <div className="qdg-spinner" />
+                <p className="qdg-running-status">{statusText}</p>
+                <p className="qdg-running-hint">Please wait while we prepare your document…</p>
             </div>
         );
     }
 
     if (phase === 'error') {
         return (
-            <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
-                <div className="text-5xl">❌</div>
-                <h2 className="text-xl font-bold text-gray-900">Generation Failed</h2>
-                <p className="text-sm text-red-600 max-w-md">{errorMsg}</p>
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="mt-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
-                >
+            <div className="qdg-error">
+                <div className="qdg-error-icon">
+                    <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    </svg>
+                </div>
+                <h2 className="qdg-error-title">Generation Failed</h2>
+                <p className="qdg-error-msg">{errorMsg}</p>
+                <button type="button" className="qdg-error-btn" onClick={onClose}>
                     Go Back
                 </button>
             </div>

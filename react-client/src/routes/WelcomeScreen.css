@@ -1,63 +1,110 @@
 /* WelcomeScreen.css */
 
 .welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #F7F5F2;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Hero text ───────────────────────────────────────────────────────────── */
+.welcome-hero {
     text-align: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    max-width: 680px;
+    margin-bottom: 48px;
 }
 
-.welcome-screen h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 20px;
+.welcome-hero h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2D2D2D;
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
 }
 
-.welcome-screen p {
-    font-size: 1.2rem;
-    color: #7f8c8d;
-    margin-bottom: 40px;
+.welcome-subtitle {
+    font-size: 1.1rem;
+    color: #8A817C;
+    margin: 0 0 12px;
 }
 
+.welcome-body {
+    font-size: 0.95rem;
+    color: #8A817C;
+    line-height: 1.6;
+    margin: 0;
+}
 
+/* ── Cards row ───────────────────────────────────────────────────────────── */
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 24px;
+    flex-wrap: wrap;
 }
 
 .button-card {
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border: 1px solid #E6D3A3;
+    border-radius: 16px;
+    padding: 36px 32px 32px;
+    width: 320px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     text-align: center;
-    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s;
 }
 
-.button-card h2 {
-    font-size: 1.5rem;
-    color: #34495e;
-    margin-bottom: 10px;
+.button-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+    transform: translateY(-2px);
 }
 
-.button-card p {
-    font-size: 1rem;
-    color: #95a5a6;
+/* ── Illustration ────────────────────────────────────────────────────────── */
+.card-icon {
     margin-bottom: 20px;
 }
 
+.card-illustration {
+    width: 80px;
+    height: 80px;
+}
+
+/* ── Card text ───────────────────────────────────────────────────────────── */
+.button-card h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2D2D2D;
+    margin: 0 0 10px;
+}
+
+.button-card p {
+    font-size: 0.9rem;
+    color: #8A817C;
+    line-height: 1.5;
+    margin: 0 0 24px;
+}
+
+/* ── Button ──────────────────────────────────────────────────────────────── */
 .button-card button {
-    background-color: #0078d4;
+    background-color: #3B82F6;
     color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 4px;
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
+    width: 100%;
 }
 
 .button-card button:hover {
-    background-color: #005a9e;
+    background-color: #2563EB;
 }

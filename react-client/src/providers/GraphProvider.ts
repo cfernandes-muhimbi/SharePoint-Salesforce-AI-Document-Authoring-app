@@ -201,6 +201,22 @@ export class GraphProvider {
         return await this._providerClient?.api(endpoint).getStream();
     }
 
+    /**
+     * Grant write (edit) permission on a drive item to a specific AAD user.
+     * Uses the /invite endpoint with sendInvitation:false so no email is sent —
+     * we deliver the notification ourselves via the Teams card.
+     */
+    public async grantEditPermission(driveId: string, itemId: string, userId: string): Promise<void> {
+        const endpoint = `/drives/${driveId}/items/${itemId}/invite`;
+        const body = {
+            requireSignIn: true,
+            sendInvitation: false,
+            roles: ['write'],
+            recipients: [{ objectId: userId }],
+        };
+        await this._providerClient?.api(endpoint).post(body);
+    }
+
     /** Send an Adaptive Card via Teams 1-on-1 chat to the given user. */
     public async sendReviewCard(
         recipientId: string,
@@ -237,19 +253,22 @@ export class GraphProvider {
         const cardBody: object[] = [
             {
                 type: 'TextBlock',
-                text: '📄 Document Review Request',
+                text: 'Document Review Request',
                 weight: 'Bolder',
                 size: 'Medium',
                 color: 'Accent',
             },
             {
                 type: 'TextBlock',
-                text: `**${senderName}** has shared a document with you for review.`,
+                text: `**${senderName}** has shared a document with you for review. You have been granted **edit access** and can make changes directly.`,
                 wrap: true,
             },
             {
                 type: 'FactSet',
-                facts: [{ title: 'Document', value: documentTitle }],
+                facts: [
+                    { title: 'Document', value: documentTitle },
+                    { title: 'Access', value: 'Edit (full control)' },
+                ],
             },
         ];
 
@@ -271,7 +290,7 @@ export class GraphProvider {
             actions: [
                 {
                     type: 'Action.OpenUrl',
-                    title: 'Open Document',
+                    title: 'Open & Edit Document',
                     url: documentUrl,
                     style: 'positive',
                 },
