@@ -11,7 +11,7 @@ collaboration.
 
 ------------------------------------------------------------------------
 
-## 🎥 ## Demo
+## 🎥 Demo
 
 ### Video
 
@@ -219,9 +219,6 @@ Templates use **docxtemplater merge syntax**:
 
 These variables are automatically populated using **Salesforce
 opportunity data**.
-
-------------------------------------------------------------------------
-
 
 
 ------------------------------------------------------------------------
